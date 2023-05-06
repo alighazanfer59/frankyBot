@@ -94,7 +94,8 @@ def csvlog(df, filename):
 
     with open(filename, mode='a', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow(df.iloc[-1])
+        timestamp = df.index[-1]
+        writer.writerow(timestamp,df.iloc[-1])
 
 
 # code for appending a new row to the trades CSV file

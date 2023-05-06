@@ -49,9 +49,10 @@ print(in_pos)
 
 # In[5]:
 
-
+# in_position = False
 size = calculate_order_size(symbol, usdt_amount)
 qty = asset
+# qty = 0
 
 # cronjob code
  

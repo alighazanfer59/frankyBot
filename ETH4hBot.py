@@ -8,10 +8,10 @@
 
 import datetime as dt
 import time
-import my_functions
-import importlib
-importlib.reload(my_functions)
-from my_functions import *
+# import main_functions
+# import importlib
+# importlib.reload(main_functions)
+from main_functions import *
 
 
 # In[2]:
@@ -24,33 +24,44 @@ pd.set_option('display.max_rows', 200)
 
 
 # Define the time periods for the moving averages and the Bollinger Bands
-length1 = 5
-length2 = 26
-bbPeriod = 32
+length1 = 1
+length2 = 28
+bbPeriod = 36
 bbStdDev = 1
 
 # Define RSI configuration
-rsiLength = 18
+rsiLength = 13
+dailyRSI = 48
 
 # Define stop loss in percentage
-stop_loss = 5.7
+stop_loss = 5.4
 
 # Define trading parameters
-symbol = 'BTC/USDT'
-usdt_amount = 50
-timeframe = '1m'
-rsi_tf = '5min'
+symbol = 'ETH/USDT'
+usdt_amount = 100
+timeframe = '4h'
+rsi_tf = '1d'
 
-tradesfile = "btcTrades.csv"
+tradesfile = "eth4H_trades.csv"
 logfile = "btc.csv"
 
 
 # In[4]:
 
 
-in_pos = in_pos("BTC")
-in_position = in_pos[0]
-asset = in_pos[2]
+import json
+
+from main_functions import update_dict_value
+
+
+# Load the JSON data from the file
+with open('pos.json', 'r') as f:
+    json_pos = f.read()
+
+# Convert the JSON data back to a dictionary
+pos = json.loads(json_pos)
+
+in_position = pos['eth4h']
 
 
 # In[5]:
@@ -69,6 +80,7 @@ try:
          bbStdDev=bbStdDev,
          rsi_tf=rsi_tf,
          rsiLength=rsiLength,
+         dailyRSI=dailyRSI
          )
     print(df.iloc[-1:])
     # Check for buy and sell signals

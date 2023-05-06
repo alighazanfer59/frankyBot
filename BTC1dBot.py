@@ -8,10 +8,10 @@
 
 import datetime as dt
 import time
-import my_functions
-import importlib
-importlib.reload(my_functions)
-from my_functions import *
+import main_functions
+# import importlib
+# importlib.reload(main_functions)
+from main_functions import *
 
 
 # In[2]:
@@ -24,40 +24,54 @@ pd.set_option('display.max_rows', 200)
 
 
 # Define the time periods for the moving averages and the Bollinger Bands
-length1 = 5
+length1 = 4
 length2 = 26
-bbPeriod = 32
+bbPeriod = 33
 bbStdDev = 1
 
 # Define RSI configuration
 rsiLength = 18
+dailyRSI = 48
 
 # Define stop loss in percentage
-stop_loss = 5.7
+stop_loss = 5.3
 
 # Define trading parameters
 symbol = 'BTC/USDT'
-usdt_amount = 50
-timeframe = '4h'
+usdt_amount = 75
+timeframe = '1d'
 rsi_tf = '1d'
 
-tradesfile = "btc4H_Trades.csv"
-logfile = "btc4H.csv"
+tradesfile = "btc1D_trades.csv"
+logfile = "btc1D.csv"
 
 
 # In[4]:
 
 
-in_pos = in_pos("BTC")
-in_position = in_pos[0]
-asset = in_pos[2]
-print(in_pos)
+import json
+
+from main_functions import update_dict_value
+
+
+# Load the JSON data from the file
+with open('pos.json', 'r') as f:
+    json_pos = f.read()
+with open('qty.json', 'r') as f:
+    json_qty = f.read()
+
+# Convert the JSON data back to a dictionary
+pos = json.loads(json_pos)
+qty = json.loads(json_qty)
+
+in_position = pos['btc1d']
 
 # In[5]:
 
 
 size = calculate_order_size(symbol, usdt_amount)
-qty = asset
+qty = qty['btc1d']
+
 
 # cronjob code
  
@@ -70,6 +84,7 @@ try:
          bbStdDev=bbStdDev,
          rsi_tf=rsi_tf,
          rsiLength=rsiLength,
+         dailyRSI=dailyRSI
          )
     print(df.iloc[-1:])
     # Check for buy and sell signals
@@ -81,6 +96,7 @@ try:
         in_position = True
         buyprice = float(buyId['info']['fills'][0]['price'])
         qty = float(buyId['info']['origQty'])
+        qty = update_dict_value('qty.json', 'btc1d', qty)
         buycsv(df, buyprice, tradesfile)
         print(f'Buy order placed for {symbol} at {buyprice}')
 

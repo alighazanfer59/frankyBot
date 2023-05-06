@@ -8,10 +8,10 @@
 
 import datetime as dt
 import time
-import my_functions
-import importlib
-importlib.reload(my_functions)
-from my_functions import *
+# import my_functions
+# import importlib
+# importlib.reload(my_functions)
+from main_functions import *
 
 
 # In[2]:
@@ -24,40 +24,54 @@ pd.set_option('display.max_rows', 200)
 
 
 # Define the time periods for the moving averages and the Bollinger Bands
-length1 = 5
-length2 = 26
-bbPeriod = 32
-bbStdDev = 1
+length1 = 1
+length2 = 34
+bbPeriod = 33
+bbStdDev = 2
 
 # Define RSI configuration
-rsiLength = 18
+rsiLength = 19
+dailyRSI = 50
 
 # Define stop loss in percentage
-stop_loss = 5.7
+stop_loss = 3.5
 
 # Define trading parameters
-symbol = 'BTC/USDT'
-usdt_amount = 50
-timeframe = '1m'
-rsi_tf = '5min'
+symbol = 'QNT/USDT'
+usdt_amount = 150
+timeframe = '4h'
+rsi_tf = '1d'
 
-tradesfile = "btcTrades.csv"
-logfile = "btc.csv"
+tradesfile = "qnt_trades.csv"
+logfile = "qnt.csv"
 
 
 # In[4]:
 
 
-in_pos = in_pos("BTC")
-in_position = in_pos[0]
-asset = in_pos[2]
+import json
 
+from main_functions import update_dict_value
+
+
+# Load the JSON data from the file
+with open('pos.json', 'r') as f:
+    json_pos = f.read()
+with open('qty.json', 'r') as f:
+    json_qty = f.read()
+
+# Convert the JSON data back to a dictionary
+pos = json.loads(json_pos)
+qty = json.loads(json_qty)
+
+in_position = pos['qnt4h']
 
 # In[5]:
 
 
 size = calculate_order_size(symbol, usdt_amount)
-qty = asset
+qty = qty['qnt4h']
+
 
 # cronjob code
  
@@ -69,6 +83,7 @@ try:
          bbStdDev=bbStdDev,
          rsi_tf=rsi_tf,
          rsiLength=rsiLength,
+         dailyRSI=dailyRSI
          )
     print(df.iloc[-1:])
     # Check for buy and sell signals
@@ -80,6 +95,7 @@ try:
         in_position = True
         buyprice = float(buyId['info']['fills'][0]['price'])
         qty = float(buyId['info']['origQty'])
+        qty = update_dict_value('qty.json', 'qnt4h', qty)
         buycsv(df, buyprice, tradesfile)
         print(f'Buy order placed for {symbol} at {buyprice}')
 
@@ -88,13 +104,13 @@ try:
         sellId = place_sell_order(symbol, qty)
         in_position = False
         sellprice = float(sellId['info']['fills'][0]['price'])
-        buyprice = read_buyprice()
+        buyprice = read_buyprice(tradesfile)
         profit = ((sellprice - buyprice) / buyprice- 0.002) * 100
         sellcsv(df, buyprice, sellprice, tradesfile)
         print(f'Sell order placed for {symbol} at {sellprice}, Profit: {profit:.2f}%')
 
     # Check for stop loss
-    elif in_position and (df['close'][-1] / buyprice - 1) * 100 < -stop_loss/100:
+    elif in_position and (df['close'][-1] / read_buyprice(tradesfile) - 1) * 100 < -stop_loss/100:
         # Place sell order
         sellId = place_sell_order(symbol, qty)
         in_position = False

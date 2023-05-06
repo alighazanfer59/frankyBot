@@ -1,26 +1,10 @@
 import ccxt
-from myConfig import binanceTestnet
 from myConfig import binanceAPI
 import pandas as pd
 import pandas_ta as ta
 import numpy as np
 import csv
 import os
-
-def binanceTest():  
-    exchange = ccxt.binance({
-        'apiKey': binanceTestnet['apiKey'],
-        'secret': binanceTestnet['secretKey'],
-        'enableRateLimit': True,
-        'rateLimit': 10000,
-        'options': {
-            'recvWindow': 20000,  # replace with your desired recv_window value
-            'test': True,  # use testnet (sandbox) environment
-            'adjustForTimeDifference': True,
-        }
-    })
-    exchange.set_sandbox_mode(enable=True)
-    return exchange
 
 def binanceActive():
     exchange = ccxt.binance({
@@ -173,3 +157,12 @@ def read_buyprice(filename):
     except:
         buyprice = np.nan
     return buyprice
+
+import json
+
+def update_dict_value(filename, key, value):
+    with open(filename, 'r') as f:
+        d = json.load(f)
+    d[key] = value
+    with open(filename, 'w') as f:
+        json.dump(d, f)

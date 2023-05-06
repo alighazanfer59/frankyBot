@@ -74,7 +74,7 @@ qty = qty['btc4h']
 
 # cronjob code
  
-
+print(exchange.fetch_balance()['info']['balances'])
 # try:
 df = getdata(symbol, timeframe, limit=100,
         length1=length1,
@@ -85,6 +85,7 @@ df = getdata(symbol, timeframe, limit=100,
         rsiLength=rsiLength,
         dailyRSI=dailyRSI
         )
+print(df)
 #     print(df.iloc[-1:])
 #     # Check for buy and sell signals
 #     signal = df['buy'][-1]

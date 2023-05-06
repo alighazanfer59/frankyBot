@@ -1,5 +1,5 @@
 import ccxt
-from myConfig import binanceAPI
+from frankyConfig import binanceAPI
 import pandas as pd
 import pandas_ta as ta
 import numpy as np
@@ -13,9 +13,9 @@ def binanceActive():
         'enableRateLimit': True,
         'rateLimit': 10000,
         'options': {
-            'recvWindow': 20000,  # replace with your desired recv_window value
+            # 'recvWindow': 20000,  # replace with your desired recv_window value
             'test': False,  # use testnet (sandbox) environment
-            'adjustForTimeDifference': True,
+            # 'adjustForTimeDifference': True,
         }
     })
     # exchange.set_sandbox_mode(enable=False)

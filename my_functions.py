@@ -37,7 +37,7 @@ def binanceActive():
     # exchange.set_sandbox_mode(enable=False)
     return exchange
 
-exchange = binanceActive()
+exchange = binanceTest()
 
 # Define function to place buy order
 def place_buy_order(symbol, size):

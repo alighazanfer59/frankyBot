@@ -8,9 +8,9 @@
 
 import datetime as dt
 import time
-import my_functions
-import importlib
-importlib.reload(my_functions)
+# import my_functions
+# import importlib
+# importlib.reload(my_functions)
 from my_functions import *
 
 
@@ -88,13 +88,13 @@ try:
         sellId = place_sell_order(symbol, qty)
         in_position = False
         sellprice = float(sellId['info']['fills'][0]['price'])
-        buyprice = read_buyprice()
+        buyprice = read_buyprice(tradesfile)
         profit = ((sellprice - buyprice) / buyprice- 0.002) * 100
         sellcsv(df, buyprice, sellprice, tradesfile)
         print(f'Sell order placed for {symbol} at {sellprice}, Profit: {profit:.2f}%')
 
     # Check for stop loss
-    elif in_position and (df['close'][-1] / buyprice - 1) * 100 < -stop_loss/100:
+    elif in_position and (df['close'][-1] / read_buyprice(tradesfile) - 1) * 100 < -stop_loss/100:
         # Place sell order
         sellId = place_sell_order(symbol, qty)
         in_position = False

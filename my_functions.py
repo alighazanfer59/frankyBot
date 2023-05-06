@@ -1,6 +1,5 @@
 import ccxt
-from myConfig import binanceTestnet
-from myConfig import binanceAPI
+from frankyConfig import binanceTestnet
 import pandas as pd
 import pandas_ta as ta
 import numpy as np
@@ -20,21 +19,6 @@ def binanceTest():
         }
     })
     exchange.set_sandbox_mode(enable=True)
-    return exchange
-
-def binanceActive():
-    exchange = ccxt.binance({
-        'apiKey': binanceAPI['apiKey'],
-        'secret': binanceAPI['secretKey'],
-        'enableRateLimit': True,
-        'rateLimit': 10000,
-        'options': {
-            'recvWindow': 20000,  # replace with your desired recv_window value
-            'test': False,  # use testnet (sandbox) environment
-            'adjustForTimeDifference': True,
-        }
-    })
-    # exchange.set_sandbox_mode(enable=False)
     return exchange
 
 exchange = binanceTest()

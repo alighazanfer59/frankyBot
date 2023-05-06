@@ -12,13 +12,7 @@ import time
 # import importlib
 # importlib.reload(my_functions)
 from my_functions import *
-
-
-# In[2]:
-
-
-pd.set_option('display.max_rows', 200) 
-
+time.sleep(5)
 
 # In[3]:
 

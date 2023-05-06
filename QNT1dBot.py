@@ -12,13 +12,7 @@ import time
 # import importlib
 # importlib.reload(my_functions)
 from main_functions import *
-
-
-# In[2]:
-
-
-pd.set_option('display.max_rows', 200) 
-
+time.sleep(5)
 
 # In[3]:
 
@@ -43,7 +37,7 @@ timeframe = '1d'
 rsi_tf = '1d'
 
 tradesfile = "qnt1D_trades.csv"
-logfile = "qnt.csv"
+logfile = "qnt1D.csv"
 
 
 # In[4]:
@@ -92,7 +86,7 @@ try:
     if signal == True and not in_position:
         # Place buy order
         buyId = place_buy_order(symbol, size)
-        in_position = True
+        in_position = update_dict_value('pos.json', 'qnt1d', True)
         buyprice = float(buyId['info']['fills'][0]['price'])
         qty = float(buyId['info']['origQty'])
         qty = update_dict_value('qty.json', 'qnt1d', qty)
@@ -102,7 +96,7 @@ try:
     elif df['sell'][-1] == True and in_position:
         # Place sell order
         sellId = place_sell_order(symbol, qty)
-        in_position = False
+        in_position = update_dict_value('pos.json', 'qnt1d', False)
         sellprice = float(sellId['info']['fills'][0]['price'])
         buyprice = read_buyprice(tradesfile)
         profit = ((sellprice - buyprice) / buyprice- 0.002) * 100
@@ -113,7 +107,7 @@ try:
     elif in_position and (df['close'][-1] / read_buyprice(tradesfile) - 1) * 100 < -stop_loss/100:
         # Place sell order
         sellId = place_sell_order(symbol, qty)
-        in_position = False
+        in_position = update_dict_value('pos.json', 'qnt1d', False)
         sellprice = float(sellId['info']['fills'][0]['price'])
         buyprice = read_buyprice("btcTrades")
         profit = ((buyprice - sellprice) / buyprice- 0.002) * 100

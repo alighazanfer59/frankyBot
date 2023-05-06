@@ -12,12 +12,12 @@ import time
 # import importlib
 # importlib.reload(my_functions)
 from main_functions import *
-
+time.sleep(5)
 
 # In[2]:
 
 
-pd.set_option('display.max_rows', 200) 
+# pd.set_option('display.max_rows', 200) 
 
 
 # In[3]:
@@ -42,8 +42,8 @@ usdt_amount = 125
 timeframe = '1d'
 rsi_tf = '1d'
 
-tradesfile = "eth_trades.csv"
-logfile = "eth.csv"
+tradesfile = "eth1D_trades.csv"
+logfile = "eth1D.csv"
 
 
 # In[4]:
@@ -91,7 +91,7 @@ try:
     if signal == True and not in_position:
         # Place buy order
         buyId = place_buy_order(symbol, size)
-        in_position = True
+        in_position = update_dict_value('pos.json', 'eth1d', True)
         buyprice = float(buyId['info']['fills'][0]['price'])
         qty = float(buyId['info']['origQty'])
         qty = update_dict_value('qty.json', 'eth1d', qty)
@@ -101,7 +101,7 @@ try:
     elif df['sell'][-1] == True and in_position:
         # Place sell order
         sellId = place_sell_order(symbol, qty)
-        in_position = False
+        in_position = update_dict_value('pos.json', 'eth1d', False)
         sellprice = float(sellId['info']['fills'][0]['price'])
         buyprice = read_buyprice(tradesfile)
         profit = ((sellprice - buyprice) / buyprice- 0.002) * 100
@@ -112,16 +112,12 @@ try:
     elif in_position and (df['close'][-1] / read_buyprice(tradesfile) - 1) * 100 < -stop_loss/100:
         # Place sell order
         sellId = place_sell_order(symbol, qty)
-        in_position = False
+        in_position = update_dict_value('pos.json', 'eth1d', False)
         sellprice = float(sellId['info']['fills'][0]['price'])
         buyprice = read_buyprice("btcTrades")
         profit = ((buyprice - sellprice) / buyprice- 0.002) * 100
         sellcsv(df, buyprice, sellprice, tradesfile)
         print(f'Sell order placed for {symbol} at {sellprice}, Profit: {profit:.2f}%')
-
-# write the last row to the CSV file    
-#         with open('btc.csv', 'a', newline='') as f:
-#             df.iloc[-1:].to_csv(f, header=f.tell())   
 
     csvlog(df, logfile)
 

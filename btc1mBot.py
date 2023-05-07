@@ -103,7 +103,7 @@ elif in_position and (df['close'][-1] / read_buyprice(tradesfile) - 1) * 100 < -
 #         with open('btc.csv', 'a', newline='') as f:
 #             df.iloc[-1:].to_csv(f, header=f.tell())   
 
-    csvlog(df, logfile)
+csvlog(df, logfile)
 
 # except Exception as e:
 #     print(e)

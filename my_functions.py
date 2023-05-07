@@ -6,6 +6,7 @@ import numpy as np
 import csv
 import os
 
+
 def binanceTest():  
     exchange = ccxt.binance({
         'apiKey': binanceTestnet['apiKey'],

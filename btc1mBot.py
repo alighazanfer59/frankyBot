@@ -13,6 +13,9 @@ import time
 # importlib.reload(my_functions)
 from my_functions import *
 time.sleep(5)
+import sys
+sys.path.append('/path/to/module/files')
+
 
 # In[3]:
 

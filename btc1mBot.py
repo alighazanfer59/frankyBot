@@ -56,48 +56,48 @@ qty = asset
 
 # cronjob code
  
-try:
-    df = getdata(symbol, timeframe, limit=100,
-         length1=length1,
-         length2=length2,
-         bbPeriod=bbPeriod,
-         bbStdDev=bbStdDev,
-         rsi_tf=rsi_tf,
-         rsiLength=rsiLength,
-         )
-    print(df.iloc[-1:])
-    # Check for buy and sell signals
-    signal = df['buy'][-1]
-    print(dt.datetime.now())
-    if signal == True and not in_position:
-        # Place buy order
-        buyId = place_buy_order(symbol, size)
-        in_position = True
-        buyprice = float(buyId['info']['fills'][0]['price'])
-        qty = float(buyId['info']['origQty'])
-        buycsv(df, buyprice, tradesfile)
-        print(f'Buy order placed for {symbol} at {buyprice}')
+# try:
+df = getdata(symbol, timeframe, limit=100,
+        length1=length1,
+        length2=length2,
+        bbPeriod=bbPeriod,
+        bbStdDev=bbStdDev,
+        rsi_tf=rsi_tf,
+        rsiLength=rsiLength,
+        )
+print(df.iloc[-1:])
+# Check for buy and sell signals
+signal = df['buy'][-1]
+print(dt.datetime.now())
+if signal == True and not in_position:
+    # Place buy order
+    buyId = place_buy_order(symbol, size)
+    in_position = True
+    buyprice = float(buyId['info']['fills'][0]['price'])
+    qty = float(buyId['info']['origQty'])
+    buycsv(df, buyprice, tradesfile)
+    print(f'Buy order placed for {symbol} at {buyprice}')
 
-    elif df['sell'][-1] == True and in_position:
-        # Place sell order
-        sellId = place_sell_order(symbol, qty)
-        in_position = False
-        sellprice = float(sellId['info']['fills'][0]['price'])
-        buyprice = read_buyprice(tradesfile)
-        profit = ((sellprice - buyprice) / buyprice- 0.002) * 100
-        sellcsv(df, buyprice, sellprice, tradesfile)
-        print(f'Sell order placed for {symbol} at {sellprice}, Profit: {profit:.2f}%')
+elif df['sell'][-1] == True and in_position:
+    # Place sell order
+    sellId = place_sell_order(symbol, qty)
+    in_position = False
+    sellprice = float(sellId['info']['fills'][0]['price'])
+    buyprice = read_buyprice(tradesfile)
+    profit = ((sellprice - buyprice) / buyprice- 0.002) * 100
+    sellcsv(df, buyprice, sellprice, tradesfile)
+    print(f'Sell order placed for {symbol} at {sellprice}, Profit: {profit:.2f}%')
 
-    # Check for stop loss
-    elif in_position and (df['close'][-1] / read_buyprice(tradesfile) - 1) * 100 < -stop_loss/100:
-        # Place sell order
-        sellId = place_sell_order(symbol, qty)
-        in_position = False
-        sellprice = float(sellId['info']['fills'][0]['price'])
-        buyprice = read_buyprice("btcTrades")
-        profit = ((buyprice - sellprice) / buyprice- 0.002) * 100
-        sellcsv(df, buyprice, sellprice, tradesfile)
-        print(f'Sell order placed for {symbol} at {sellprice}, Profit: {profit:.2f}%')
+# Check for stop loss
+elif in_position and (df['close'][-1] / read_buyprice(tradesfile) - 1) * 100 < -stop_loss/100:
+    # Place sell order
+    sellId = place_sell_order(symbol, qty)
+    in_position = False
+    sellprice = float(sellId['info']['fills'][0]['price'])
+    buyprice = read_buyprice("btcTrades")
+    profit = ((buyprice - sellprice) / buyprice- 0.002) * 100
+    sellcsv(df, buyprice, sellprice, tradesfile)
+    print(f'Sell order placed for {symbol} at {sellprice}, Profit: {profit:.2f}%')
 
 # write the last row to the CSV file    
 #         with open('btc.csv', 'a', newline='') as f:
@@ -105,8 +105,8 @@ try:
 
     csvlog(df, logfile)
 
-except Exception as e:
-    print(e)
+# except Exception as e:
+#     print(e)
 
 # sec_of_execution = dt.datetime.now().second+(dt.datetime.now().microsecond/1000000)
 # time.sleep(60-sec_of_execution+5)

@@ -3,4 +3,4 @@ myConfig.py
 frankyBot.pem
 frankyBot.ppk
 venv/
-__pychache__/
+__pychache__

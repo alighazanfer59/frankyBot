@@ -110,11 +110,11 @@ def buycsv(df, buyprice,filename):
 
     with open(filename, mode='a', newline='') as file:
         writer = csv.writer(file)
-        buyprice = buyprice # replace with actual buy price
-        sellprice =  "position still open"# replace with actual sell price
+        buy_price = buyprice # replace with actual buy price
+        sell_price =  "position still open"# replace with actual sell price
         profit_percentage = "nan" #((sell_price - buy_price) / buy_price) * 100
         timestamp = df.index[-1]
-        writer.writerow(timestamp,buyprice,sellprice,profit_percentage)
+        writer.writerow([timestamp,buy_price,sell_price,profit_percentage])
         
 
 
@@ -132,7 +132,7 @@ def sellcsv(df, buyprice, sellprice, filename):
         sell_price =  sellprice # replace with actual sell price
         profit_percentage = ((sell_price - buy_price) / buy_price) * 100
         timestamp = df.index[-1]
-        writer.writerow(timestamp,buyprice,sellprice,profit_percentage)
+        writer.writerow([timestamp,buy_price,sell_price,profit_percentage])
 
 
 # asset = 0

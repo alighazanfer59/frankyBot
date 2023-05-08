@@ -80,12 +80,13 @@ try:
          )
     print(df.iloc[-1:])
     # Check for buy and sell signals
-    signal = df['buy'][-1]
+    signal = df['buy'][-2]
     print(dt.datetime.now())
     if signal == True and not in_position:
         # Place buy order
         buyId = place_buy_order(symbol, size)
         in_position = update_dict_value('pos.json', 'eth4h', True)
+        print(df.iloc[-2:-1])
         buyprice = float(buyId['info']['fills'][0]['price'])
         qty = float(buyId['info']['origQty'])
         buycsv(df, buyprice, tradesfile)

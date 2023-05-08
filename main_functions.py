@@ -53,7 +53,7 @@ def calculate_order_size(symbol, usdt_amount):
 # Load historical price data
 def getdata(symbol, timeframe, limit=100, length1=5, length2=26, bbPeriod=32,bbStdDev=1,rsi_tf='1d',rsiLength=18, dailyRSI = 50):
     ohlcv = exchange.fetch_ohlcv(symbol, timeframe,limit=limit)
-    df = pd.DataFrame(ohlcv, columns=['timestamp', 'open', 'high', 'low', 'close', 'volume']).iloc[:-1]
+    df = pd.DataFrame(ohlcv, columns=['timestamp', 'open', 'high', 'low', 'close', 'volume'])
     df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
     df.set_index('timestamp', inplace=True)
     df = df[['open', 'high', 'low', 'close', 'volume']]

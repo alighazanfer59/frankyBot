@@ -79,7 +79,7 @@ if signal == True and not in_position:
     buycsv(df, buyprice, tradesfile)
     print(f'Buy order placed for {symbol} at {buyprice}')
 
-elif df['sell'][-1] == True and in_position:
+elif in_position and df['sell'][-1] == True:
     # Place sell order
     sellId = place_sell_order(symbol, qty)
     in_position = False
@@ -90,7 +90,7 @@ elif df['sell'][-1] == True and in_position:
     print(f'Sell order placed for {symbol} at {sellprice}, Profit: {profit:.2f}%')
 
 # Check for stop loss
-elif in_position and (df['close'][-1] / read_buyprice(tradesfile) - 1) * 100 < -stop_loss/100:
+elif in_position and ((df['close'][-1] / read_buyprice(tradesfile)) - 1) * 100 < -stop_loss/100:
     # Place sell order
     sellId = place_sell_order(symbol, qty)
     in_position = False
@@ -98,7 +98,7 @@ elif in_position and (df['close'][-1] / read_buyprice(tradesfile) - 1) * 100 < -
     buyprice = read_buyprice("btcTrades")
     profit = ((buyprice - sellprice) / buyprice- 0.002) * 100
     sellcsv(df, buyprice, sellprice, tradesfile)
-    print(f'Sell order placed for {symbol} at {sellprice}, Profit: {profit:.2f}%')
+    print(f'Stop Loss order placed for {symbol} at {sellprice}, Profit: {profit:.2f}%')
 
 # write the last row to the CSV file    
 #         with open('btc.csv', 'a', newline='') as f:

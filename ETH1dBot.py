@@ -115,7 +115,7 @@ try:
         sellId = place_sell_order(symbol, qty)
         in_position = update_dict_value('pos.json', 'eth1d', False)
         sellprice = float(sellId['info']['fills'][0]['price'])
-        buyprice = read_buyprice("btcTrades")
+        buyprice = read_buyprice(tradesfile)
         profit = ((buyprice - sellprice) / buyprice- 0.002) * 100
         sellcsv(df, buyprice, sellprice, tradesfile)
         print(f'Sell order placed for {symbol} at {sellprice}, Profit: {profit:.2f}%')

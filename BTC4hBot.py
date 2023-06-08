@@ -12,10 +12,9 @@ import time
 # import importlib
 # importlib.reload(main_functions)
 from main_functions import *
+
 time.sleep(5)
-
 # In[3]:
-
 
 # Define the time periods for the moving averages and the Bollinger Bands
 length1 = 5
@@ -89,7 +88,7 @@ try:
         in_position = update_dict_value('pos.json', 'btc4h', True)
         print(df.iloc[-2:-1])
         buyprice = float(buyId['info']['fills'][0]['price'])
-        qty = float(buyId['info']['origQty'])
+        qty = min(float(buyId['info']['origQty'])), getqty(symbol[:-4])
         qty = update_dict_value('qty.json', 'btc4h', qty)
         buycsv(df, buyprice, tradesfile)
         print(f'Buy order placed for {symbol} at {buyprice}')

@@ -1,0 +1,10 @@
+#*/10 * * * * /usr/bin/python3 frankyBot/BTC4hBot.py >> output_BTC4hBot.txt 2>&1
+#*/10 * * * * /usr/bin/python3 frankyBot/BTC1dBot.py >> output_BTC1dBot.txt 2>&1
+#*/10 * * * * /usr/bin/python3 frankyBot/ETH4hBot.py >> output_ETH4hBot.txt 2>&1
+#*/10 * * * * /usr/bin/python3 frankyBot/ETH1dBot.py >> output_ETH1dBot.txt 2>&1
+#*/10 * * * * /usr/bin/python3 frankyBot/QNT4hBot.py >> output_QNT4hBot.txt 2>&1
+#*/10 * * * * /usr/bin/python3 frankyBot/QNT1dBot.py >> output_QNT1dBot.txt 2>&1
+#*/10 * * * * /usr/bin/python3 frankyBot/BNB4hBot.py >> output_BNB4hBot.txt 2>&1
+#*/10 * * * * /usr/bin/python3 frankyBot/BNB1dBot.py >> output_BNB1dBot.txt 2>&1
+
+*/10 * * * * /usr/bin/python3 frankyBot/troubleshoot.py >> output_troubleshoot.txt 2>&1

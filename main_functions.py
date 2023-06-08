@@ -5,6 +5,7 @@ import pandas_ta as ta
 import numpy as np
 import csv
 import os
+import time
 
 def binanceActive():
     exchange = ccxt.binance({
@@ -13,15 +14,28 @@ def binanceActive():
         'enableRateLimit': True,
         'rateLimit': 10000,
         'options': {
-            # 'recvWindow': 20000,  # replace with your desired recv_window value
+            'recvWindow': 9000,  # replace with your desired recv_window value
             'test': False,  # use testnet (sandbox) environment
-            # 'adjustForTimeDifference': True,
+            'adjustForTimeDifference': True,
         }
     })
     # exchange.set_sandbox_mode(enable=False)
     return exchange
 
 exchange = binanceActive()
+
+
+def servertime():
+    time = exchange.fetch_time()
+    time = pd.to_datetime(time, unit ='ms')
+    print(time)
+
+
+def getqty(coin):
+    for item in exchange.fetch_balance()['info']['balances']:
+        if item['asset'] == coin:
+            qty = float(item['free'])
+    return qty
 
 # Define function to place buy order
 def place_buy_order(symbol, size):
@@ -167,3 +181,23 @@ def update_dict_value(filename, key, value):
     d[key] = value
     with open(filename, 'w') as f:
         json.dump(d, f)
+
+
+
+# async def get_qty(coin):
+#     balance = exchange.fetch_balance()
+#     qty = [float(item['free']) for item in balance['info']['balances'] if item['asset'] == coin][0]
+#     return qty
+
+# async def main():
+#     qty_task = asyncio.create_task(get_qty(coin))
+#     qty_task2 =  asyncio.create_task(getqty(coin))
+#     qty = await qty_task
+#     print(servertime())
+#     qty2 = await qty_task2
+#     print(servertime())
+#     print(qty)
+#     print(f"qty = {qty2}")
+
+
+# asyncio.run(main())

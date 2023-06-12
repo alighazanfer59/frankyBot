@@ -14,9 +14,9 @@ def binanceActive():
         'enableRateLimit': True,
         'rateLimit': 10000,
         'options': {
-            'recvWindow': 9000,  # replace with your desired recv_window value
+            # 'recvWindow': 9000,  # replace with your desired recv_window value
             'test': False,  # use testnet (sandbox) environment
-            'adjustForTimeDifference': True,
+            # 'adjustForTimeDifference': True,
         }
     })
     # exchange.set_sandbox_mode(enable=False)
@@ -36,6 +36,8 @@ def getqty(coin):
         if item['asset'] == coin:
             qty = float(item['free'])
     return qty
+
+# print(getqty('ETH'))
 
 # Define function to place buy order
 def place_buy_order(symbol, size):

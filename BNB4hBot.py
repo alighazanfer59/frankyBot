@@ -79,7 +79,7 @@ try:
             rsiLength=rsiLength,
             dailyRSI=dailyRSI
             )
-    print(df.iloc[-1:])
+    print(df.iloc[-2:-1])
     # Check for buy and sell signals
     signal = df['buy'][-2]
     print(dt.datetime.now())
@@ -89,7 +89,7 @@ try:
         in_position = update_dict_value('pos.json', 'bnb4h', True)
         print(df.iloc[-2:-1])
         buyprice = float(buyId['info']['fills'][0]['price'])
-        qty = float(buyId['info']['origQty'])
+        qty = float(buyId['info']['origQty'])*(1-0.1/100)
         qty = update_dict_value('qty.json', 'bnb4h', qty)
         buycsv(df, buyprice, tradesfile)
         print(f'Buy order placed for {symbol} at {buyprice}')
@@ -103,6 +103,7 @@ try:
         profit = ((sellprice - buyprice) / buyprice- 0.002) * 100
         sellcsv(df, buyprice, sellprice, tradesfile)
         print(f'Sell order placed for {symbol} at {sellprice}, Profit: {profit:.2f}%')
+        print(df.iloc[-1:])
 
     # Check for stop loss
     elif in_position and (df['close'][-1] / read_buyprice(tradesfile) - 1) * 100 < -stop_loss/100:

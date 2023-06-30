@@ -6,5 +6,7 @@
 */10 * * * * /usr/bin/python3 frankyBot/QNT1dBot.py >> output_QNT1dBot.txt 2>&1
 */10 * * * * /usr/bin/python3 frankyBot/BNB4hBot.py >> output_BNB4hBot.txt 2>&1
 */10 * * * * /usr/bin/python3 frankyBot/BNB1dBot.py >> output_BNB1dBot.txt 2>&1
+*/10 * * * * /usr/bin/python3 frankyBot/LTC4hBot.py >> output_LTC4hBot.txt 2>&1
+*/10 * * * * /usr/bin/python3 frankyBot/LTC1dBot.py >> output_LTC1dBot.txt 2>&1
 
 #*/10 * * * * /usr/bin/python3 frankyBot/troubleshoot.py >> output_troubleshoot.txt 2>&1

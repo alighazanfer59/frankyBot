@@ -121,6 +121,7 @@ try:
 #             df.iloc[-1:].to_csv(f, header=f.tell())   
 
     csvlog(df, logfile)
+    print("=======================================================================================")
 
 except Exception as e:
     print(e)

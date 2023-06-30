@@ -37,7 +37,7 @@ def getqty(coin):
             qty = float(item['free'])
     return qty
 
-# print(getqty('ETH'))
+# print(getqty('BTC'))
 
 # Define function to place buy order
 def place_buy_order(symbol, size):
@@ -59,10 +59,8 @@ def calculate_order_size(symbol, usdt_amount):
     # Get the current market price of the coin
     ticker = exchange.fetch_ticker(symbol)
     price = ticker['last']
-    
     # Calculate the order size based on the USDT amount and the market price
     size = usdt_amount / price
-    
     return size
 
 
@@ -184,6 +182,9 @@ def update_dict_value(filename, key, value):
     with open(filename, 'w') as f:
         json.dump(d, f)
 
+
+# trades = exchange.fetch_trades('ETHUSDT')[-1]
+# print(trades)
 
 
 # async def get_qty(coin):

@@ -122,6 +122,7 @@ try:
         print(f'Sell order placed for {symbol} at {sellprice}, Profit: {profit:.2f}%')
 
     csvlog(df, logfile)
+    print("=======================================================================================")
 
 except Exception as e:
     print(e)

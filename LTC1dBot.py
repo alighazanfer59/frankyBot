@@ -107,7 +107,7 @@ try:
         print(df.iloc[-1:])
 
     # Check for stop loss
-    elif in_position and (df['close'][-1] / read_buyprice() - 1) * 100 < -stop_loss/100:
+    elif in_position and (df['close'][-1] / read_buyprice(tradesfile) - 1) * 100 < -stop_loss/100:
         # Place sell order
         sellId = place_sell_order(symbol, qty)
         in_position = update_dict_value('pos.json', 'ltc1d', False)
@@ -119,6 +119,7 @@ try:
   
 
     csvlog(df, logfile)
+    print("=======================================================================================")
 
 except Exception as e:
     print(e)

@@ -89,6 +89,7 @@ try:
         print(df.iloc[-2:-1])
         buyprice = float(buyId['info']['fills'][0]['price'])
         qty = float(buyId['info']['origQty'])*(1-0.1/100)
+        qty = update_dict_value('qty.json', 'eth4h', qty)
         buycsv(df, buyprice, tradesfile)
         print(f'Buy order placed for {symbol} at {buyprice}')
 
@@ -104,7 +105,7 @@ try:
         print(df.iloc[-1:])
 
     # Check for stop loss
-    elif in_position and (df['close'][-1] / read_buyprice() - 1) * 100 < -stop_loss/100:
+    elif in_position and (df['close'][-1] / read_buyprice(tradesfile) - 1) * 100 < -stop_loss/100:
         # Place sell order
         sellId = place_sell_order(symbol, qty)
         in_position = update_dict_value('pos.json', 'eth4h', False)
@@ -115,6 +116,7 @@ try:
         print(f'Sell order placed for {symbol} at {sellprice}, Profit: {profit:.2f}%')
 
     csvlog(df, logfile)
+    print("=======================================================================================")
 
 except Exception as e:
     print(e)

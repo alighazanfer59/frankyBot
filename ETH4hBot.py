@@ -32,7 +32,7 @@ stop_loss = 5.4
 
 # Define trading parameters
 symbol = 'ETH/USDT'
-usdt_amount = 100
+usdt_amount = 15.29
 timeframe = '4h'
 rsi_tf = '1d'
 
@@ -105,7 +105,7 @@ try:
         print(df.iloc[-1:])
 
     # Check for stop loss
-    elif in_position and (df['close'][-1] / read_buyprice(tradesfile) - 1) * 100 < -stop_loss/100:
+    elif in_position and (df['close'][-1] / read_buyprice(tradesfile)) < (1-stop_loss/100):
         # Place sell order
         sellId = place_sell_order(symbol, qty)
         in_position = update_dict_value('pos.json', 'eth4h', False)
@@ -113,7 +113,7 @@ try:
         buyprice = read_buyprice(tradesfile)
         profit = ((buyprice - sellprice) / buyprice- 0.002) * 100
         sellcsv(df, buyprice, sellprice, tradesfile)
-        print(f'Sell order placed for {symbol} at {sellprice}, Profit: {profit:.2f}%')
+        print(f'Stop loss sell order placed for {symbol} at {sellprice}, Profit: {profit:.2f}%')
 
     csvlog(df, logfile)
     print("=======================================================================================")

@@ -37,7 +37,7 @@ def getqty(coin):
             qty = float(item['free'])
     return qty
 
-# print(getqty('BTC'))
+# print(getqty('ETH'))
 
 # Define function to place buy order
 def place_buy_order(symbol, size):
@@ -183,7 +183,7 @@ def update_dict_value(filename, key, value):
         json.dump(d, f)
 
 
-# trades = exchange.fetch_trades('ETHUSDT')[-1]
+# trades = exchange.fetch_trades('ETHUSDT')[-2:]
 # print(trades)
 
 
